@@ -1,17 +1,30 @@
 [package]
-name = "<crate_name>"
+name = "raylib-eco"
 version = "0.1.0"
 authors = ["Evan Pratten <ewpratten@gmail.com>"]
 edition = "2018"
-description = "<description>"
-documentation = "https://docs.rs/<crate_name>"
+description = "A rewrite of the raylib crate to work smoothly with the Rust ecosystem"
+documentation = "https://docs.rs/raylib-eco"
 readme = "README.md"
-homepage = "https://github.com/ewpratten/<repo_name>"
-repository = "https://github.com/ewpratten/<repo_name>"
+homepage = "https://github.com/braincell-check/raylib-eco"
+repository = "https://github.com/braincell-check/raylib-eco"
 license = "GPL-3.0"
-keywords = []
-categories = []
+keywords = ["bindings", "raylib", "gamedev"]
+categories = ["api-bindings", "game-engines", "graphics"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+raylib-sys = { version = "3.5", git = "https://github.com/braincell-check/raylib-rs" }
+libc = "0.2.45"
+lazy_static = "1.2.0"
+cfg-if = "1.0.0"
+serde = { version = "1.0.125", features = ["derive"], optional = true }
+cgmath = { version = "0.18.0", features = ["serde"] }
+
+[features]
+nightly = []
+nobuild = ["raylib-sys/nobuild"]
+
+[package.metadata.docs.rs]
+features = ["nobuild"]
