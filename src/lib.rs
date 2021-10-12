@@ -76,3 +76,6 @@ pub use crate::core::*;
 
 #[cfg(feature="serde")]
 extern crate serde;
+
+#[macro_use]
+extern crate num_traits;

@@ -1,8 +1,10 @@
 //! 3D Model, Mesh, and Animation
-use crate::core::math::{BoundingBox, Vector3};
+use nalgebra::{Matrix4, Matrix4xX, Transform3};
+
 use crate::core::texture::Image;
 use crate::core::{RaylibHandle, RaylibThread};
 use crate::ffi;
+use crate::math::ToFFIMatrix;
 use std::ffi::CString;
 
 fn no_drop<T>(_thing: T) {}
@@ -126,12 +128,12 @@ impl Model {
 }
 
 pub trait RaylibModel: AsRef<ffi::Model> + AsMut<ffi::Model> {
-    fn transform(&self) -> &crate::math::Matrix {
-        unsafe { std::mem::transmute(&self.as_ref().transform) }
+    fn transform(&self) -> &Matrix4<f32> {
+        Matrix4::from_ffi_matrix(&self.as_ref().transform)
     }
 
-    fn set_transform(&mut self, mat: &crate::math::Matrix) {
-        self.as_mut().transform = mat.into();
+    fn set_transform(&mut self, mat: &Matrix4<f32>) {
+        self.as_mut().transform = mat.to_ffi_matrix();
     }
 
     fn meshes(&self) -> &[WeakMesh] {
@@ -191,7 +193,7 @@ pub trait RaylibModel: AsRef<ffi::Model> + AsMut<ffi::Model> {
             )
         })
     }
-    fn bind_pose(&self) -> Option<&crate::math::Transform> {
+    fn bind_pose(&self) -> Option<&Transform3<f32>> {
         if self.as_ref().bindPose.is_null() {
             return None;
         }

@@ -1,6 +1,7 @@
 //! Keyboard, Controller, and Mouse related functions
+use nalgebra::Vector2;
+
 use crate::consts::GestureType;
-use crate::core::math::Vector2;
 use crate::core::RaylibHandle;
 use crate::ffi;
 
@@ -191,25 +192,29 @@ impl RaylibHandle {
 
     /// Returns mouse position.
     #[inline]
-    pub fn get_mouse_position(&self) -> Vector2 {
-        unsafe { ffi::GetMousePosition().into() }
+    pub fn get_mouse_position(&self) -> Vector2<f32> {
+        Vector2::from_ffi_vector(unsafe { ffi::GetMousePosition() })
     }
 
     /// Sets mouse position.
     #[inline]
-    pub fn set_mouse_position(&mut self, position: impl Into<Vector2>) {
+    pub fn set_mouse_position<T>(&mut self, position: Vector2<T>)
+    where
+        T: Into<i32>,
+    {
         unsafe {
-            let Vector2 { x, y } = position.into();
-            ffi::SetMousePosition(x as i32, y as i32);
+            ffi::SetMousePosition(position.x as i32, position.y as i32);
         }
     }
 
     /// Sets mouse offset.
     #[inline]
-    pub fn set_mouse_offset(&mut self, offset: impl Into<Vector2>) {
+    pub fn set_mouse_offset<T>(&mut self, offset: Vector2<T>)
+    where
+        T: Into<i32>,
+    {
         unsafe {
-            let Vector2 { x, y } = offset.into();
-            ffi::SetMouseOffset(x as i32, y as i32);
+            ffi::SetMouseOffset(offset.x as i32, offset.y as i32);
         }
     }
 
@@ -241,8 +246,8 @@ impl RaylibHandle {
 
     /// Returns touch position XY for a touch point index (relative to screen size).
     #[inline]
-    pub fn get_touch_position(&self, index: u32) -> Vector2 {
-        unsafe { ffi::GetTouchPosition(index as i32).into() }
+    pub fn get_touch_position(&self, index: u32) -> Vector2<f32> {
+        Vector2::from_ffi_vector(unsafe { ffi::GetTouchPosition(index as i32) })
     }
 
     /// Enables a set of gestures using flags.
@@ -279,8 +284,8 @@ impl RaylibHandle {
 
     /// Gets gesture drag vector.
     #[inline]
-    pub fn get_gesture_drag_vector(&self) -> Vector2 {
-        unsafe { ffi::GetGestureDragVector().into() }
+    pub fn get_gesture_drag_vector(&self) -> Vector2<f32> {
+        Vector2::from_ffi_vector(unsafe { ffi::GetGestureDragVector() })
     }
 
     /// Gets gesture drag angle.
@@ -291,8 +296,8 @@ impl RaylibHandle {
 
     /// Gets gesture pinch delta.
     #[inline]
-    pub fn get_gesture_pinch_vector(&self) -> Vector2 {
-        unsafe { ffi::GetGesturePinchVector().into() }
+    pub fn get_gesture_pinch_vector(&self) -> Vector2<f32> {
+        Vector2::from_ffi_vector(unsafe { ffi::GetGesturePinchVector() })
     }
 
     /// Gets gesture pinch angle.

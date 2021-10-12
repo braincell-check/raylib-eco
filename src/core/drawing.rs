@@ -1,7 +1,9 @@
 //! Contains code related to drawing. Types that can be set as a surface to draw will implement the [`RaylibDraw`] trait
+use nalgebra::{Vector2, Vector3};
+use num_traits::Float;
+use parry3d::query::Ray;
+
 use crate::core::camera::Camera3D;
-use crate::core::math::Ray;
-use crate::core::math::{Vector2, Vector3};
 
 use crate::core::texture::Texture2D;
 use crate::core::vr::RaylibVR;
@@ -376,7 +378,10 @@ pub trait RaylibDraw {
 
     /// Draw lines sequence
     #[inline]
-    fn draw_line_strip(&mut self, points: &[Vector2], color: impl Into<ffi::Color>) {
+    fn draw_line_strip<T>(&mut self, points: &[Vector2<T>], color: impl Into<ffi::Color>)
+    where
+        T: Float,
+    {
         unsafe {
             ffi::DrawLineStrip(
                 points.as_ptr() as *mut ffi::Vector2,
@@ -768,7 +773,10 @@ pub trait RaylibDraw {
 
     /// Draw a triangle fan defined by points.
     #[inline]
-    fn draw_triangle_fan(&mut self, points: &[Vector2], color: impl Into<ffi::Color>) {
+    fn draw_triangle_fan<T>(&mut self, points: &[Vector2<T>], color: impl Into<ffi::Color>)
+    where
+        T: Float,
+    {
         unsafe {
             ffi::DrawTriangleFan(
                 points.as_ptr() as *mut ffi::Vector2,
@@ -780,7 +788,10 @@ pub trait RaylibDraw {
 
     /// Draw a triangle strip defined by points
     #[inline]
-    fn draw_triangle_strip(&mut self, points: &[Vector2], color: impl Into<ffi::Color>) {
+    fn draw_triangle_strip<T>(&mut self, points: &[Vector2<T>], color: impl Into<ffi::Color>)
+    where
+        T: Float,
+    {
         unsafe {
             ffi::DrawTriangleStrip(
                 points.as_ptr() as *mut ffi::Vector2,
@@ -1137,7 +1148,10 @@ pub trait RaylibDraw3D {
     /// // Draw a triangle strip defined by points
     #[allow(non_snake_case)]
     #[inline]
-    fn draw_triangle_strip3D(&mut self, points: &[Vector3], color: impl Into<ffi::Color>) {
+    fn draw_triangle_strip3D<T>(&mut self, points: &[Vector3<T>], color: impl Into<ffi::Color>)
+    where
+        T: Float,
+    {
         unsafe {
             ffi::DrawTriangleStrip3D(points.as_ptr() as *mut _, points.len() as i32, color.into());
         }
@@ -1474,15 +1488,17 @@ pub trait RaylibDraw3D {
 
     /// Draws a billboard texture defined by `source_rec`.
     #[inline]
-    fn draw_billboard_rec(
+    fn draw_billboard_rec<T>(
         &mut self,
-        camera: Camera3D,
+        camera: Camera3D<T>,
         texture: &Texture2D,
         source_rec: impl Into<ffi::Rectangle>,
         center: impl Into<ffi::Vector3>,
         size: f32,
         tint: impl Into<ffi::Color>,
-    ) {
+    ) where
+        T: Float,
+    {
         unsafe {
             ffi::DrawBillboardRec(
                 camera.into(),
