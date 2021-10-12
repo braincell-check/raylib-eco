@@ -1,6 +1,5 @@
 //! Text and Font related functions
 //! Text manipulation functions are super unsafe so use rust String functions
-use crate::core::math::Vector2;
 use crate::core::texture::{Image, Texture2D};
 use crate::core::{RaylibHandle, RaylibThread};
 use crate::ffi;

@@ -1,6 +1,5 @@
-use crate::core::color::Color;
+
 use crate::core::drawing::RaylibDraw;
-use crate::core::math::{Rectangle, Vector2};
 use crate::core::text::WeakFont;
 use crate::core::RaylibHandle;
 use crate::ffi;

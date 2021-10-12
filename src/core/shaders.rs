@@ -1,7 +1,5 @@
 //! Code for the safe manipulation of shaders
 use crate::consts::ShaderUniformDataType;
-use crate::core::math::Matrix;
-use crate::core::math::{Vector2, Vector3, Vector4};
 use crate::core::{RaylibHandle, RaylibThread};
 use crate::ffi;
 use std::ffi::CString;
