@@ -23,7 +23,7 @@ nalgebra = { version = "0.29.0", features = ["serde-serialize"] }
 num-traits = "0.2.14"
 rgb = "0.8.27"
 parry3d = "0.7.1"
-parry2d = "0.7.1"
+parry2d = "0.8.0"
 
 [features]
 nightly = []
